@@ -7,11 +7,6 @@ obj/
 *.log
 packages/
 
-appsettings.Development.json
-appsettings.Production.json
-appsettings.Staging.json
-appsettings.Local.json
-
 .idea/
 .idea/workspace.xml
 .idea/tasks.xml
