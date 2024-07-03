@@ -1,5 +1,6 @@
 using Contracts;
 using Microsoft.AspNetCore.HttpOverrides;
+using Microsoft.AspNetCore.Mvc;
 using NLog;
 using UltimateASPNETApp.Extensions;
 
@@ -8,6 +9,10 @@ var builder = WebApplication.CreateBuilder(args);
 LogManager.Setup().LoadConfigurationFromFile(string.Concat(Directory.GetCurrentDirectory(), "/nlog.config"));
 
 builder.Services.AddAutoMapper(typeof(Program));
+builder.Services.Configure<ApiBehaviorOptions>(options =>
+{
+    options.SuppressModelStateInvalidFilter = true;
+});
 builder.Services.AddControllers(config =>
     {
         config.RespectBrowserAcceptHeader = true;
