@@ -42,8 +42,8 @@ public sealed class EmployeeService : IEmployeeService
         return employeeDto;
     }
 
-    public EmployeeDto CreateEmployeeForCompany(Guid companyId, EmployeeForCreationDto 
-        employeeForCreation, bool trackChanges)
+    public EmployeeDto CreateEmployeeForCompany(Guid companyId, EmployeeForCreationDto employeeForCreation,
+        bool trackChanges)
     {
         var company = _repository.Company.GetCompany(companyId, trackChanges);
         if (company is null)
@@ -54,5 +54,4 @@ public sealed class EmployeeService : IEmployeeService
         var employeeToReturn = _mapper.Map<EmployeeDto>(employeeEntity);
         return employeeToReturn;
     }
-
 }
