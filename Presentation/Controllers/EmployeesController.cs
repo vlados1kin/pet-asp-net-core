@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Mvc;
 using Presentation.ActionFilters;
 using Service.Contracts;
 using Shared.DataTransferObject;
+using Shared.RequestFeatures;
 
 namespace Presentation.Controllers;
 
@@ -15,9 +16,11 @@ public class EmployeesController : ControllerBase
     public EmployeesController(IServiceManager service) => _service = service;
 
     [HttpGet]
-    public async Task<IActionResult> GetEmployeesForCompany(Guid companyId)
+    public async Task<IActionResult> GetEmployeesForCompany(Guid companyId,
+        [FromQuery] EmployeeParameters employeeParameters)
     {
-        var employees = await _service.EmployeeService.GetEmployeesAsync(companyId, trackChanges: false);
+        var employees =
+            await _service.EmployeeService.GetEmployeesAsync(companyId, employeeParameters, trackChanges: false);
         return Ok(employees);
     }
 
@@ -30,9 +33,11 @@ public class EmployeesController : ControllerBase
 
     [HttpPost]
     [ServiceFilter(typeof(ValidationFilterAttribute))]
-    public async Task<IActionResult> CreateEmployeeForCompany(Guid companyId, [FromBody] EmployeeForCreationDto employee)
+    public async Task<IActionResult> CreateEmployeeForCompany(Guid companyId,
+        [FromBody] EmployeeForCreationDto employee)
     {
-        var employeeToReturn = await _service.EmployeeService.CreateEmployeeForCompanyAsync(companyId, employee, trackChanges: false);
+        var employeeToReturn =
+            await _service.EmployeeService.CreateEmployeeForCompanyAsync(companyId, employee, trackChanges: false);
         return CreatedAtRoute("GetEmployeeForCompany", new { companyId, id = employeeToReturn.Id }, employeeToReturn);
     }
 
@@ -45,9 +50,11 @@ public class EmployeesController : ControllerBase
 
     [HttpPut("{id:guid}")]
     [ServiceFilter(typeof(ValidationFilterAttribute))]
-    public async Task<IActionResult> UpdateEmployeeForCompany(Guid companyId, Guid id, [FromBody] EmployeeForUpdateDto employee)
+    public async Task<IActionResult> UpdateEmployeeForCompany(Guid companyId, Guid id,
+        [FromBody] EmployeeForUpdateDto employee)
     {
-        await _service.EmployeeService.UpdateEmployeeForCompanyAsync(companyId, id, employee, compTrackChanges: false, empTrackChanges: true);
+        await _service.EmployeeService.UpdateEmployeeForCompanyAsync(companyId, id, employee, compTrackChanges: false,
+            empTrackChanges: true);
         return NoContent();
     }
 
@@ -58,7 +65,8 @@ public class EmployeesController : ControllerBase
         if (patchDoc is null)
             return BadRequest("patchDoc object sent from client is null.");
         var result =
-            await _service.EmployeeService.GetEmployeeForPatchAsync(companyId, id, compTrackChanges: false, empTrackChanges: true);
+            await _service.EmployeeService.GetEmployeeForPatchAsync(companyId, id, compTrackChanges: false,
+                empTrackChanges: true);
         patchDoc.ApplyTo(result.employeeToPatch, ModelState);
         TryValidateModel(result.employeeToPatch);
         if (!ModelState.IsValid)
