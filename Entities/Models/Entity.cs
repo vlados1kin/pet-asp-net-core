@@ -7,7 +7,7 @@ using System.Xml.Serialization;
 
 namespace Entities.Models;
 
-public class Entity : DynamicObject, IDictionary<string, object>
+public class Entity : DynamicObject, IXmlSerializable, IDictionary<string, object>
 {
     private readonly string _root = "Entity";
     private readonly IDictionary<string, object> _expando;
@@ -58,37 +58,37 @@ public class Entity : DynamicObject, IDictionary<string, object>
         }
     }
 
-    // public void WriteXml(XmlWriter writer)
-    // {
-    //     foreach (var key in _expando.Keys)
-    //     {
-    //         var value = _expando[key];
-    //         WriteLinksToXml(key, value, writer);
-    //     }
-    // }
+    public void WriteXml(XmlWriter writer)
+    {
+        foreach (var key in _expando.Keys)
+        {
+            var value = _expando[key];
+            WriteLinksToXml(key, value, writer);
+        }
+    }
 
-    // private void WriteLinksToXml(string key, object value, XmlWriter writer)
-    // {
-    //     writer.WriteStartElement(key);
-    //
-    //     if (value.GetType() == typeof(List<Link>))
-    //     {
-    //         foreach (var val in value as List<Link>)
-    //         {
-    //             writer.WriteStartElement(nameof(Link));
-    //             WriteLinksToXml(nameof(val.Href), val.Href, writer);
-    //             WriteLinksToXml(nameof(val.Method), val.Method, writer);
-    //             WriteLinksToXml(nameof(val.Rel), val.Rel, writer);
-    //             writer.WriteEndElement();
-    //         }
-    //     }
-    //     else
-    //     {
-    //         writer.WriteString(value.ToString());
-    //     }
-    //
-    //     writer.WriteEndElement();
-    // }
+    private void WriteLinksToXml(string key, object value, XmlWriter writer)
+    {
+        writer.WriteStartElement(key);
+
+        if (value.GetType() == typeof(List<Link>))
+        {
+            foreach (var val in value as List<Link>)
+            {
+                writer.WriteStartElement(nameof(Link));
+                WriteLinksToXml(nameof(val.Href), val.Href, writer);
+                WriteLinksToXml(nameof(val.Method), val.Method, writer);
+                WriteLinksToXml(nameof(val.Rel), val.Rel, writer);
+                writer.WriteEndElement();
+            }
+        }
+        else
+        {
+            writer.WriteString(value.ToString());
+        }
+
+        writer.WriteEndElement();
+    }
 
     public void Add(string key, object value)
     {
