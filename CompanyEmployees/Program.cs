@@ -6,6 +6,7 @@ using Microsoft.Extensions.Options;
 using NLog;
 using Presentation.ActionFilters;
 using UltimateASPNETApp.Extensions;
+using UltimateASPNETApp.Utility;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -45,6 +46,7 @@ builder.Services.ConfigureSqlContext(builder.Configuration);
 builder.Services.ConfigureDataShaper();
 builder.Services.AddCustomMediaTypes();
 builder.Services.AddScoped<ValidateMediaTypeAttribute>();
+builder.Services.AddScoped<IEmployeeLinks, EmployeeLinks>();
 
 var app = builder.Build();
 
