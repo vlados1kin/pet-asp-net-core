@@ -42,6 +42,7 @@ builder.Services.ConfigureServiceManager();
 builder.Services.ConfigureValidationFilter();
 builder.Services.ConfigureSqlContext(builder.Configuration);
 builder.Services.ConfigureDataShaper();
+builder.Services.AddCustomMediaTypes();
 
 var app = builder.Build();
 
