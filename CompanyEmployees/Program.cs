@@ -4,6 +4,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Formatters;
 using Microsoft.Extensions.Options;
 using NLog;
+using Presentation.ActionFilters;
 using UltimateASPNETApp.Extensions;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -43,6 +44,7 @@ builder.Services.ConfigureValidationFilter();
 builder.Services.ConfigureSqlContext(builder.Configuration);
 builder.Services.ConfigureDataShaper();
 builder.Services.AddCustomMediaTypes();
+builder.Services.AddScoped<ValidateMediaTypeAttribute>();
 
 var app = builder.Build();
 
