@@ -3,7 +3,7 @@ using Service.Contracts;
 
 namespace Presentation.Controllers;
 
-[ApiVersion("2.0")]
+[ApiVersion("2.0", Deprecated = true)]
 [Route("api/companies")]
 [ApiController]
 public class CompaniesV2Controller : ControllerBase
@@ -16,6 +16,7 @@ public class CompaniesV2Controller : ControllerBase
     public async Task<IActionResult> GetCompanies()
     {
         var companies = await _service.CompanyService.GetAllCompaniesAsync(trackChanges: false);
-        return Ok(companies);
+        var companies2 = companies.Select(x => $"{x.Name} V2");
+        return Ok(companies2);
     }
 }
