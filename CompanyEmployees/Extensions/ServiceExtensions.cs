@@ -111,8 +111,8 @@ public static class ServiceExtensions
             new RateLimitRule
             {
                 Endpoint = "*",
-                Limit = 3,
-                Period = "5m"
+                Limit = 300,
+                Period = "30m"
             }
         };
         services.Configure<IpRateLimitOptions>(opt => { opt.GeneralRules = rateLimitRules; });
