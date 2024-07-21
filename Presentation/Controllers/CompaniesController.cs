@@ -1,4 +1,5 @@
 ﻿using Marvin.Cache.Headers;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Presentation.ActionFilters;
 using Presentation.ModelBinders;
@@ -24,6 +25,7 @@ public class CompaniesController : ControllerBase
     }
     
     [HttpGet(Name = "GetCompanies")]
+    [Authorize]
     public async Task<IActionResult> GetCompanies()
     {
         var companies = await _service.CompanyService.GetAllCompaniesAsync(trackChanges: false);
