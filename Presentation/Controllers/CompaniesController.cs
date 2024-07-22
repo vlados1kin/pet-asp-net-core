@@ -23,9 +23,9 @@ public class CompaniesController : ControllerBase
         Response.Headers.Add("Allow", "GET, POST, PUT, DELETE, OPTIONS");
         return Ok();
     }
-    
+
     [HttpGet(Name = "GetCompanies")]
-    [Authorize]
+    [Authorize(Roles = "Manager")]
     public async Task<IActionResult> GetCompanies()
     {
         var companies = await _service.CompanyService.GetAllCompaniesAsync(trackChanges: false);
@@ -34,7 +34,7 @@ public class CompaniesController : ControllerBase
 
     [HttpGet("{id:guid}", Name = "CompanyById")]
     //[ResponseCache(CacheProfileName = "120SecondDuration")]
-    [HttpCacheExpiration(CacheLocation = CacheLocation.Public, MaxAge = 60)] 
+    [HttpCacheExpiration(CacheLocation = CacheLocation.Public, MaxAge = 60)]
     [HttpCacheValidation(MustRevalidate = false)]
     public async Task<IActionResult> GetCompany(Guid id)
     {
