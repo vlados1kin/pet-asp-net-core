@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Repository;
 
@@ -11,9 +12,11 @@ using Repository;
 namespace UltimateASPNETApp.Migrations
 {
     [DbContext(typeof(RepositoryContext))]
-    partial class RepositoryContextModelSnapshot : ModelSnapshot
+    [Migration("20240723150318_AdditionalUserFieldsForRefreshToken")]
+    partial class AdditionalUserFieldsForRefreshToken
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -225,13 +228,13 @@ namespace UltimateASPNETApp.Migrations
                     b.HasData(
                         new
                         {
-                            Id = "393d6302-43ab-4134-9538-cd33270a7c67",
+                            Id = "775aedb3-a87b-40b6-8059-a63ce8019171",
                             Name = "Manager",
                             NormalizedName = "MANAGER"
                         },
                         new
                         {
-                            Id = "2567a2f4-8216-4391-b1fd-53fbf1df64af",
+                            Id = "2f39e9ab-a0b5-4187-9853-8fed7912cf25",
                             Name = "Administrator",
                             NormalizedName = "ADMINISTRATOR"
                         });
