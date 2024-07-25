@@ -2,6 +2,7 @@
 using Contracts;
 using Entities.Exceptions;
 using Entities.Models;
+using Entities.Responses;
 using Service.Contracts;
 using Shared.DataTransferObject;
 
@@ -20,21 +21,19 @@ public sealed class CompanyService : ICompanyService
         _mapper = mapper;
     }
 
-    public IEnumerable<CompanyDto> GetAllCompanies(bool trackChanges)
+    public ApiBaseResponse GetAllCompanies(bool trackChanges)
     {
         var companies = _repository.Company.GetAllCompanies(trackChanges);
-        // var companiesDto = companies
-        //     .Select(c => new CompanyDto(c.Id, c.Name ?? "", string.Join(' ', c.Address, c.Country))).ToList();
         var companiesDto = _mapper.Map<IEnumerable<CompanyDto>>(companies);
-        return companiesDto;
+        return new ApiOkResponse<IEnumerable<CompanyDto>>(companiesDto);
+    }
+    public ApiBaseResponse GetCompany(Guid id, bool trackChanges)
+    {
+        var company = _repository.Company.GetCompany(id, trackChanges);
+        if (company is null)
+            return new CompanyNotFoundResponse(id);
+        var companyDto = _mapper.Map<CompanyDto>(company);
+        return new ApiOkResponse<CompanyDto>(companyDto);
     }
 
-    public CompanyDto GetCompany(Guid companyId, bool trackChanges)
-    {
-        var company = _repository.Company.GetCompany(companyId, trackChanges);
-        if (company is null)
-            throw new CompanyNotFoundException(companyId);
-        var companyDto = _mapper.Map<CompanyDto>(company);
-        return companyDto;
-    }
 }
